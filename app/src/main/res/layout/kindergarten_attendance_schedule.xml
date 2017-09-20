@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:calender="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:gravity="center_vertical"
+        android:paddingTop="3dp"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/tv_calendar_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="宝宝考勤"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tv_calendar_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/bt_months_selected"
+            android:text="2019年"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/bt_months_selected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@mipmap/ic_down" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.mumiantech.androidtest.WeekDayView
+            android:layout_width="match_parent"
+            android:layout_height="40dp" />
+
+        <com.mumiantech.androidtest.MonthDateView
+            android:id="@+id/muha8tan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_calender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.mumiantech.androidtest.MonthDateView>
+    </LinearLayout>
+
+</LinearLayout>

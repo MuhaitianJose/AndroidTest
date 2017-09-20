@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MonthDateView">
+        <attr name="CircleColor" format="color"/>
+        <attr name="DateHeight" format="dimension"/>
+        <attr name="SelectedDayColor" format="color"/>
+        <attr name="MormalDayColor" format="color"/>
+        <attr name="DaySize" format="dimension"/>
+    </declare-styleable>
+</resources>
