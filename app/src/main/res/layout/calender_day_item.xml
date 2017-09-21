@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="70dp"
-    android:layout_height="70dp"
+    android:id="@+id/rl_day_item"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <LinearLayout
@@ -9,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
+        android:background="@drawable/shape_calender_background"
         android:orientation="vertical">
 
         <TextView
@@ -18,25 +20,25 @@
             android:layout_gravity="center_horizontal"
             android:text="18"
             android:textColor="@android:color/black"
-            android:textSize="20sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/tv_lunar_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="6dp"
             android:text="二十"
             android:textColor="@android:color/background_dark"
-            android:textSize="8sp" />
+            android:textSize="10sp" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/tv_attendance_flag"
-        android:layout_width="5dp"
-        android:layout_height="5dp"
+        android:layout_width="2dp"
+        android:layout_height="2dp"
         android:layout_below="@+id/layout_day"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="4dp"
         android:background="@drawable/shape_circle" />
 </RelativeLayout>

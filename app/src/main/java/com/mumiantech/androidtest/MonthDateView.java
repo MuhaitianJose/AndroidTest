@@ -10,9 +10,11 @@ import android.graphics.Path;
 import android.support.annotation.Nullable;
 
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.ItemDecoration;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -34,30 +36,17 @@ public class MonthDateView extends LinearLayout implements RecycleViewListener {
 
     private Context context;
     private DisplayMetrics displayMetrics;
-    private Paint paint;
-    //视图属性
-    private int CircleColor;
-    private int DateHeight;
-    private int SelectedDayColor;
-    private int NormalDayColor;
-    private int DaySize;
+
     //数据
     private int CurrYear, CurrMonth, CurrDay;
-    private int SelYear, SelMonth, SelDay;
-    private int WeekRow;
-    private float ColumnSize, RowSize;
-    private int mTouchSlop;
-    private DateClick dateClick;
-    private int CircleRadius = 30;
-    private int[][] daysString;
-
     private final int NUM_COLUMNS = 7;
     private int NUM_ROWS = 6;
 
     //recycleView
     RecyclerView recyclerView;
-    CalenderAdapter calenderAdapter;
+    CommonAdapter calenderAdapter;
     List<CalenderDate> calenderDateList;
+    private DateClick dateClick;
 
     public MonthDateView(Context context) {
         super(context);
@@ -66,184 +55,44 @@ public class MonthDateView extends LinearLayout implements RecycleViewListener {
     public MonthDateView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
-        displayMetrics = getResources().getDisplayMetrics();
-//        initView(attrs);
+        Calendar calendar = java.util.Calendar.getInstance();
+        CurrYear = calendar.get(java.util.Calendar.YEAR);
+        CurrMonth = calendar.get(java.util.Calendar.MONTH);
+        CurrDay = calendar.get(java.util.Calendar.DATE);
     }
 
+
     public void initView() {
-        recyclerView = findViewById(R.id.rv_calender);
-        initData();
-        calenderAdapter = new CalenderAdapter(calenderDateList, R.layout.calender_day_item, this);
+        recyclerView = this.findViewById(R.id.rv_calender);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 7, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(gridLayoutManager);
+        calenderAdapter = new CommonAdapter(calenderDateList, R.layout.calender_day_item, this);
         recyclerView.setAdapter(calenderAdapter);
 
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new SpaceItemDecoration(10));
         calenderAdapter.notifyDataSetChanged();
-//        TypedArray typedArray = context.obtainStyledAttributes(attributeSet, R.styleable.MonthDateView);
-//        try {
-//            CircleColor = typedArray.getColor(R.styleable.MonthDateView_CircleColor, Color.TRANSPARENT);
-//            DateHeight = (int) typedArray.getDimension(R.styleable.MonthDateView_DateHeight, 66);
-//            DaySize = (int) typedArray.getDimension(R.styleable.MonthDateView_DaySize, 16);
-//            SelectedDayColor = typedArray.getColor(R.styleable.MonthDateView_SelectedDayColor, Color.WHITE);
-//            NormalDayColor = typedArray.getColor(R.styleable.MonthDateView_MormalDayColor, Color.BLACK);
-//            Calendar calendar = Calendar.getInstance();
-//            CurrYear = calendar.get(Calendar.YEAR);
-//            CurrMonth = calendar.get(Calendar.MONTH);
-//            CurrDay = calendar.get(Calendar.DATE);
-//            SelYear = CurrYear;
-//            SelMonth = CurrMonth;
-//            SelDay = CurrDay;
-//            RowSize = DateHeight;
-//            paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-//            mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
-//        } finally {
-//            typedArray.recycle();
-//        }
+
     }
 
-    private void initData() {
-        calenderDateList = new ArrayList<>();
-        for (int i = 0; i < NUM_COLUMNS * NUM_ROWS; i++) {
-            CalenderDate date = new CalenderDate();
-            calenderDateList.add(date);
+    public void initData(int year, int month) {
+        if (calenderDateList == null) {
+            calenderDateList = new ArrayList<>();
+            for (int i = 0; i < NUM_COLUMNS * NUM_ROWS; i++) {
+                CalenderDate date = new CalenderDate(year, month, 0);
+                calenderDateList.add(date);
+            }
         }
-        Calendar calendar = Calendar.getInstance();
-        CurrYear = calendar.get(Calendar.YEAR);
-        CurrMonth = calendar.get(Calendar.MONTH);
-        CurrDay = calendar.get(Calendar.DATE);
-        int mMonthdays = DateUtils.getMonthDays(CurrYear, CurrMonth);
-        int weekNumber = DateUtils.getFirstDayWeek(CurrYear, CurrMonth);
+        for (int i = 0; i < NUM_COLUMNS * NUM_ROWS; i++) {
+            calenderDateList.get(i).setInVisible(true);
+        }
+
+        int mMonthdays = DateUtils.getMonthDays(year, month);
+        int weekNumber = DateUtils.getFirstDayWeek(year, month);
         for (int day = 0; day < mMonthdays; day++) {
             calenderDateList.get(day + weekNumber - 1).setDay(day + 1);
-            Log.d(TAG, "onCreate: calenderDateList["+(day+weekNumber-1)+"]="+calenderDateList.get(day+weekNumber-1).getDay());
+            calenderDateList.get(day + weekNumber - 1).setInVisible(false);
         }
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
-        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-        if (widthMode == MeasureSpec.AT_MOST) {
-            widthSize = (int) (displayMetrics.density * 300);
-        }
-        NUM_ROWS = getMonthRowNumber();
-        heightSize = NUM_ROWS * DateHeight;
-        setMeasuredDimension(widthSize, heightSize);
-    }
-
-
-//    @Override
-//    protected void onDraw(Canvas canvas) {
-//        Log.d(TAG, "onDraw: ");
-//        daysString = new int[6][7];
-//        initSize();
-//        Log.d(TAG, "onDraw: SelYear=" + SelYear);
-//        Log.d(TAG, "onDraw: SelDay=" + SelMonth);
-//        int mMonthdays = DateUtils.getMonthDays(SelYear, SelMonth);
-//        int weekNumber = DateUtils.getFirstDayWeek(SelYear, SelMonth);
-//        drawLines(canvas);
-//        int column = 0, row = 0;
-//        String dayString;
-//        Log.d(TAG, "onDraw: mMonthdays=" + mMonthdays);
-//        for (int day = 0; day < mMonthdays; day++) {
-//            dayString = (day + 1) + "";
-//            column = (day + weekNumber - 1) % 7;
-//            row = (day + weekNumber - 1) / 7;
-//            daysString[row][column] = day + 1;
-//            paint.setTextSize(DaySize);
-//
-//            float startX = ColumnSize * column + (ColumnSize - paint.measureText(dayString)) / 2;
-//            float startY = RowSize * row + RowSize / 2 - (paint.ascent() + paint.descent()) / 2;
-//            Log.d(TAG, "onDraw: " + SelDay);
-//            if (dayString.equals(SelDay + "")) {
-//                Log.d(TAG, "onDraw: dayString equals" + dayString);
-//                drawCircle(row, column, canvas, false);
-//                paint.setColor(SelectedDayColor);
-//            } else {
-//                paint.setColor(NormalDayColor);
-//                Log.d(TAG, "onDraw: unequal dayString" + dayString);
-//            }
-//            paint.setStyle(Paint.Style.FILL);
-//            canvas.drawText(dayString, startX, startY, paint);
-//        }
-//    }
-
-    /**
-     * 绘制线条
-     *
-     * @param canvas
-     */
-    private void drawLines(Canvas canvas) {
-        int rightX = getWidth();
-        int BottomY = getHeight();
-        int rowCount = getMonthRowNumber();
-        int columnCount = 7;
-        Path path;
-        float startX = 0;
-        float endX = rightX;
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setColor(CircleColor);
-        for (int row = 1; row <= rowCount; row++) {
-            float startY = row * RowSize;
-            path = new Path();
-            path.moveTo(startX, startY);
-            path.lineTo(endX, startY);
-            canvas.drawPath(path, paint);
-        }
-
-        float startY = 0;
-        float endY = BottomY;
-        for (int column = 1; column < columnCount; column++) {
-            startX = column * ColumnSize;
-            path = new Path();
-            path.moveTo(startX, startY);
-            path.lineTo(startX, endY);
-            canvas.drawPath(path, paint);
-        }
-
-    }
-
-    /**
-     * 绘制事务圆形
-     *
-     * @param row
-     * @param column
-     * @param canvas
-     */
-    private void drawCircle(int row, int column, Canvas canvas, boolean isSelected) {
-
-        paint.setColor(CircleColor);
-        paint.setStyle(Paint.Style.FILL);
-        if (isSelected) {
-            float circleX = (float) (ColumnSize * column + ColumnSize * 0.5);
-            float circley = (float) (RowSize * row + RowSize * 0.5);
-            canvas.drawCircle(circleX, circley, CircleRadius, paint);
-        }
-        float circleX = (float) (ColumnSize * column + ColumnSize * 0.5);
-        float circley = (float) (RowSize * row + RowSize * 0.2);
-        canvas.drawCircle(circleX, circley, CircleRadius, paint);
-    }
-
-    /**
-     * 初始化列宽行高
-     */
-    private void initSize() {
-        ColumnSize = getWidth() * 1.0F / NUM_COLUMNS;
-        RowSize = DateHeight;
-    }
-
-    /**
-     * 获取总共行数
-     *
-     * @return
-     */
-    private int getMonthRowNumber() {
-        int mMonthDays = DateUtils.getMonthDays(SelYear, SelMonth);
-        int weekNumber = DateUtils.getFirstDayWeek(SelYear, SelMonth);
-        return (mMonthDays + weekNumber - 1) % 7 == 0 ? (mMonthDays + weekNumber - 1) / 7 : (mMonthDays + weekNumber - 1) / 7 + 1;
     }
 
     public void setDateClick(DateClick dateClick) {
@@ -252,12 +101,41 @@ public class MonthDateView extends LinearLayout implements RecycleViewListener {
 
     @Override
     public void onClickItem(Object data, View item) {
+        CalenderDate date = (CalenderDate) data;
+        resetItemBackground();
+        ((ViewHolder) item.getTag()).getView(R.id.layout_day).setSelected(true);
+        if (dateClick != null) {
+            dateClick.onDateClick(date.getYear(), date.getMonth(), date.getDay());
+        }
+        Log.d(TAG, "resetItemBackground: " + date.getYear() + "-" + date.getMonth() + "-" + date.getDay());
 
+    }
+
+    private void resetItemBackground() {
+        if (recyclerView != null) {
+            int childCount = recyclerView.getChildCount();
+            for (int i = 0; i < childCount; i++) {
+                View root = recyclerView.getChildAt(i);
+                LinearLayout layout_day = root.findViewById(R.id.layout_day);
+                layout_day.setSelected(false);
+            }
+        }
     }
 
     @Override
     public void onConvertView(Object data, ViewHolder holder, List datas, int pisition) {
-        Log.d(TAG, "onConvertView: ");
+        CalenderDate date = (CalenderDate) data;
+        if (date.isInVisible()) {
+            holder.setVisible(R.id.tv_lunar_day, View.INVISIBLE);
+            holder.setVisible(R.id.tv_gregorian_day, View.INVISIBLE);
+            holder.setVisible(R.id.tv_attendance_flag, View.INVISIBLE);
+            holder.getView(R.id.rl_day_item).setClickable(false);
+        } else {
+            holder.setText(R.id.tv_gregorian_day, date.getDay() + "");
+            holder.setText(R.id.tv_lunar_day, date.getLunarCalendar() + "");
+            holder.getView(R.id.rl_day_item).setClickable(true);
+        }
+        Log.d(TAG, "onConvertView: ----------------");
     }
 
     public interface DateClick {

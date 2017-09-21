@@ -2,17 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:calender="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_centerInParent="true"
     android:orientation="vertical"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp">
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="48dp"
         android:background="@android:color/white"
-        android:gravity="center_vertical"
+        android:gravity="center_horizontal"
         android:paddingTop="3dp"
         android:visibility="visible">
 
@@ -23,7 +23,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:text="宝宝考勤"
-            android:textSize="20sp" />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/tv_calendar_value"
@@ -32,7 +32,7 @@
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/bt_months_selected"
             android:text="2019年"
-            android:textSize="20sp" />
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/bt_months_selected"
@@ -50,17 +50,20 @@
 
         <com.mumiantech.androidtest.WeekDayView
             android:layout_width="match_parent"
+            android:visibility="visible"
             android:layout_height="40dp" />
 
         <com.mumiantech.androidtest.MonthDateView
-            android:id="@+id/muha8tan"
+            android:id="@+id/mdv_monthdateview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_calender"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                />
         </com.mumiantech.androidtest.MonthDateView>
     </LinearLayout>
 

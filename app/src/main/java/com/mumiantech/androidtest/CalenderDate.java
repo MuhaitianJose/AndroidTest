@@ -11,11 +11,13 @@ public class CalenderDate {
     private int Month;
     private int Day;
     private int lunarCalendar;
+    private boolean InVisible;
 
     public CalenderDate() {
         this(Calendar.getInstance().get(Calendar.YEAR),
                 Calendar.getInstance().get(Calendar.MONTH),
                 Calendar.getInstance().get(Calendar.DATE));
+        InVisible = true;
     }
 
     public CalenderDate(int year, int month, int day) {
@@ -55,5 +57,13 @@ public class CalenderDate {
 
     public void setLunarCalendar(int lunarCalendar) {
         this.lunarCalendar = lunarCalendar;
+    }
+
+    public boolean isInVisible() {
+        return InVisible;
+    }
+
+    public void setInVisible(boolean inVisible) {
+        InVisible = inVisible;
     }
 }

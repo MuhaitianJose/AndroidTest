@@ -2,6 +2,7 @@ package com.mumiantech.androidtest;
 
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,7 +15,7 @@ import android.widget.TextView;
 
 public class ViewHolder {
 
-    private View mConvertView;
+    public View mConvertView;
 
     private SparseArray<View> mViewArray;
 
@@ -38,6 +39,7 @@ public class ViewHolder {
     }
 
     public <T extends View> T getView(int id) {
+        Log.d("ViewHolder", "getView: mConvertView="+mConvertView);
         View view = mViewArray.get(id);
         if(view == null) {
             view = mConvertView.findViewById(id);
