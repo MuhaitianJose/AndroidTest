@@ -36,6 +36,7 @@ public class MonthDateView extends LinearLayout implements RecycleViewListener {
 
     //数据
     private int CurrYear, CurrMonth, CurrDay;
+    private int SelectedYear,SelectedMonth,SelectedDay;
     private final int NUM_COLUMNS = 7;
     private int NUM_ROWS = 6;
 
@@ -59,24 +60,27 @@ public class MonthDateView extends LinearLayout implements RecycleViewListener {
     }
 
 
-    public void initView() {
+    public void initView(int year, int month, int days) {
+        SelectedYear = year;
+        SelectedMonth = month;
+        SelectedDay = days;
         recyclerView = this.findViewById(R.id.rv_calender);
+        initData(year, month, days);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 7, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(gridLayoutManager);
         calenderAdapter = new CommonAdapter(calenderDateList, R.layout.calender_day_item, this);
         recyclerView.setAdapter(calenderAdapter);
-
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new SpaceItemDecoration(10));
         calenderAdapter.notifyDataSetChanged();
 
     }
 
-    public void initData(int year, int month) {
+    private void initData(int year, int month, int days) {
         if (calenderDateList == null) {
             calenderDateList = new ArrayList<>();
             for (int i = 0; i < NUM_COLUMNS * NUM_ROWS; i++) {
-                CalenderDate date = new CalenderDate(year, month, 0);
+                CalenderDate date = new CalenderDate(year, month, days);
                 calenderDateList.add(date);
             }
         }
@@ -94,6 +98,11 @@ public class MonthDateView extends LinearLayout implements RecycleViewListener {
 
     public void setDateClick(DateClick dateClick) {
         this.dateClick = dateClick;
+    }
+
+    public void changeDate(int year, int month, int days) {
+        initData(year, month, days);
+        calenderAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -121,6 +130,10 @@ public class MonthDateView extends LinearLayout implements RecycleViewListener {
 
     @Override
     public void onConvertView(Object data, ViewHolder holder, List datas, int pisition) {
+
+        if(data==null){
+            return;
+        }
         CalenderDate date = (CalenderDate) data;
         if (date.isInVisible()) {
             holder.setVisible(R.id.tv_lunar_day, View.INVISIBLE);
@@ -128,9 +141,18 @@ public class MonthDateView extends LinearLayout implements RecycleViewListener {
             holder.setVisible(R.id.tv_attendance_flag, View.INVISIBLE);
             holder.getView(R.id.rl_day_item).setClickable(false);
         } else {
+            holder.setVisible(R.id.tv_lunar_day, View.VISIBLE);
+            holder.setVisible(R.id.tv_gregorian_day, View.VISIBLE);
             holder.setText(R.id.tv_gregorian_day, date.getDay() + "");
             holder.setText(R.id.tv_lunar_day, date.getLunarCalendar() + "");
             holder.getView(R.id.rl_day_item).setClickable(true);
+        }
+        if(SelectedYear==date.getYear()&&SelectedMonth==date.getMonth()&&SelectedDay==date.getDay()){
+            if(!date.isInVisible()){
+                resetItemBackground();
+                holder.getView(R.id.layout_day).setSelected(true);
+            }
+
         }
         Log.d(TAG, "onConvertView: ----------------");
     }

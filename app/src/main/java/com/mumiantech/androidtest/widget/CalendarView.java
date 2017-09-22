@@ -2,6 +2,7 @@ package com.mumiantech.androidtest.widget;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -11,13 +12,16 @@ import android.widget.TextView;
 
 import com.mumiantech.androidtest.R;
 
+import java.util.Calendar;
 import java.util.List;
+
+import butterknife.BindView;
 
 /**
  * Created by Muhaitian on 2017/9/21.
  */
 
-public class CalendarView<T> extends LinearLayout implements View.OnClickListener, MonthDateView.DateClick,CalendarDialogView.DataSelected {
+public class CalendarView<T> extends LinearLayout implements View.OnClickListener, MonthDateView.DateClick, CalendarDialogView.DataSelected {
 
 
     TextView tvCalendarName;
@@ -45,10 +49,12 @@ public class CalendarView<T> extends LinearLayout implements View.OnClickListene
         btMonthsSelected = findViewById(R.id.bt_months_selected);
         btMonthsSelected.setOnClickListener(this);
         mdvMonthdateview = findViewById(R.id.mdv_monthdateview);
-        mdvMonthdateview.initData(2017, 8);
-        mdvMonthdateview.initView();
+        Calendar calendar = Calendar.getInstance();
+        mdvMonthdateview.initView(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE));
+        setSelectedMonth(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH));
         mdvMonthdateview.setDateClick(this);
         calendarDialogView = new CalendarDialogView(context, android.R.style.Theme_Holo_Light_Dialog_NoActionBar);
+        calendarDialogView.setDataSelected(this);
     }
 
     public void setmDataList(List<T> mDataList) {
@@ -59,9 +65,25 @@ public class CalendarView<T> extends LinearLayout implements View.OnClickListene
         this.mData = mData;
     }
 
+    public void setCalendarName(String name) {
+        tvCalendarName.setText(name);
+    }
+
+    public void setCalendarName(int name) {
+        tvCalendarName.setText(name);
+    }
+
+    private void setSelectedMonth(int year,int month){
+        tvCalendarValue.setText(year+"年"+(month+1)+"月");
+    }
+
     @Override
     public void onClick(View view) {
-
+        if (view.getId() == R.id.bt_months_selected) {
+            if (calendarDialogView != null && !calendarDialogView.isShowing()) {
+                calendarDialogView.show();
+            }
+        }
     }
 
     @Override
@@ -71,6 +93,9 @@ public class CalendarView<T> extends LinearLayout implements View.OnClickListene
 
     @Override
     public void onDateSelect(int year, int month, int day) {
-
+        if (mdvMonthdateview != null) {
+            setSelectedMonth(year,month);
+            mdvMonthdateview.changeDate(year, month, day);
+        }
     }
 }
