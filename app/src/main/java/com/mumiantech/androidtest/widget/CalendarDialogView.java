@@ -1,4 +1,4 @@
-package com.mumiantech.androidtest;
+package com.mumiantech.androidtest.widget;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
+
+import com.mumiantech.androidtest.R;
 
 /**
  * Created by Muhaitian on 2017/9/21.

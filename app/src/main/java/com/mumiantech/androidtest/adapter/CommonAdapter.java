@@ -1,4 +1,4 @@
-package com.mumiantech.androidtest;
+package com.mumiantech.androidtest.adapter;
 
 import android.support.annotation.LayoutRes;
 import android.support.v7.widget.RecyclerView;
@@ -6,6 +6,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.mumiantech.androidtest.bean.RecycleViewHolder;
+import com.mumiantech.androidtest.widget.RecycleViewListener;
 
 import java.util.List;
 

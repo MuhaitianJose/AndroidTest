@@ -1,6 +1,8 @@
-package com.mumiantech.androidtest;
+package com.mumiantech.androidtest.widget;
 
 import android.view.View;
+
+import com.mumiantech.androidtest.bean.ViewHolder;
 
 import java.util.List;
 

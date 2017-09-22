@@ -1,8 +1,7 @@
-package com.mumiantech.androidtest;
+package com.mumiantech.androidtest.widget;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -10,9 +9,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.List;
+import com.mumiantech.androidtest.R;
 
-import butterknife.BindView;
+import java.util.List;
 
 /**
  * Created by Muhaitian on 2017/9/21.
@@ -62,9 +61,7 @@ public class CalendarView<T> extends LinearLayout implements View.OnClickListene
 
     @Override
     public void onClick(View view) {
-        if(){
 
-        }
     }
 
     @Override

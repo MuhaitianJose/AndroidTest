@@ -1,27 +1,24 @@
-package com.mumiantech.androidtest;
+package com.mumiantech.androidtest.widget;
 
 import android.content.Context;
-import android.content.res.TypedArray;
-import android.graphics.Canvas;
-import android.graphics.Color;
 
-import android.graphics.Paint;
-import android.graphics.Path;
 import android.support.annotation.Nullable;
 
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.ItemDecoration;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.widget.LinearLayout;
+
+import com.mumiantech.androidtest.bean.CalenderDate;
+import com.mumiantech.androidtest.adapter.CommonAdapter;
+import com.mumiantech.androidtest.utils.DateUtils;
+import com.mumiantech.androidtest.R;
+import com.mumiantech.androidtest.bean.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.Calendar;

@@ -1,4 +1,4 @@
-package com.mumiantech.androidtest;
+package com.mumiantech.androidtest.bean;
 
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;

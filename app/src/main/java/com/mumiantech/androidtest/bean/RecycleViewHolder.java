@@ -1,7 +1,9 @@
-package com.mumiantech.androidtest;
+package com.mumiantech.androidtest.bean;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import com.mumiantech.androidtest.bean.ViewHolder;
 
 /**
  * @author Yep

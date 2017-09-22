@@ -1,4 +1,4 @@
-package com.mumiantech.androidtest;
+package com.mumiantech.androidtest.bean;
 
 import java.util.Calendar;
 

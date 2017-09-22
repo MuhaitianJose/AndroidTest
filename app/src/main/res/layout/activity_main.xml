@@ -6,14 +6,11 @@
     android:layout_height="match_parent"
     tools:context="com.mumiantech.androidtest.MainActivity">
 
-    <!-- <com.mumiantech.androidtest.CalendarView
-         android:id="@+id/cv_calenderview"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"/>-->
-    <Button
-        android:id="@+id/buttonPanel"
-        android:layout_width="wrap_content"
+
+    <com.mumiantech.androidtest.widget.CalendarView
+        android:layout_width="368dp"
         android:layout_height="wrap_content"
-        android:visibility="visible" />
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="8dp" />
 
 </android.support.constraint.ConstraintLayout>
